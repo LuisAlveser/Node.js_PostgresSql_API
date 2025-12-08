@@ -1,7 +1,11 @@
 const express =require("express");
  const app=express();
 
-const postsRoute=require("./models/posts");
+const postsRoute=require("./routes/posts");
+const bodyParser=require("body-parser");
 
-app.use("/posts",postsRoute);
+
+app.use(bodyParser.json());
+
+app.use("/post",postsRoute);
  module.exports =app;
