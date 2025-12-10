@@ -1,5 +1,7 @@
 const { where } = require("sequelize");
 const models= require("../models");
+const Validator=require("fastest-validator");
+
 
 
 function save(req,res){
@@ -9,6 +11,21 @@ function save(req,res){
     imagemUrl: req.body.imagemUrl,
     categoryId:req.body.categoryId,
     userId: 1
+  }
+  const schema={/// Faz a validação dos campos 
+    title:{type:"string",optional:false,max:100},
+    content:{type:"string",optional:false,max:500},
+    categoryId:{type:"number",optional:false},
+  }
+  const v= new Validator();
+
+  const validatorResponse=v.validate(post,schema);
+
+  if(validatorResponse!==true){
+    return res.status(404).json({
+      message:"Validation failed",
+      erros: validatorResponse
+    });
   }
   models.Post.create(post).then(result=>{
     return res.status(201).json({
@@ -56,6 +73,7 @@ function index (req,res){
 }
 function update(req,res){
    const id =req.params.id;
+  
    const  updatedPost={
      title: req.body.title,
        content:req.body.content ,
@@ -63,6 +81,22 @@ function update(req,res){
     categoryId:req.body.categoryId,
    }
  const userId=1;
+   const schema={/// Faz a validação dos campos 
+    title:{type:"string",optional:false,max:100},
+    content:{type:"string",optional:false,max:500},
+      categoryId:{type:"number",optional:false},
+  
+  }
+  const v= new Validator();
+
+  const validatorResponse=v.validate(updatedPost,schema);
+
+  if(validatorResponse!==true){
+    return res.status(404).json({
+      message:"Validation failed",
+      erros: validatorResponse
+    });
+  }
  models.Post.update(updatedPost,{where:{id:id,userId:userId}}).then(result=>{
     res.status(200).json({
          message:"Post updated successful",
