@@ -14,5 +14,9 @@ function checkAuth(req,res,next){
     }
 }
 module.exports={
+<<<<<<< HEAD
     checkAuth:checkAuth,
+=======
+    checkAuth:checkAuth
+>>>>>>> e2599f31f31333e96a05a6bda171f06a48b35a02
 }
